@@ -1,13 +1,10 @@
 class Doctor
     attr_reader :name
 
-    attr_accessor :appointments
-
     @@all = []
 
     def initialize(name)
         @name = name
-        @appointments = []
         @@all << self
     end
 
@@ -20,12 +17,12 @@ class Doctor
     end
 
     def patients
-        results = []
-        self.appointments.each do |appt|
-            if !results.include?(appt.patient)
-                results << appt.patient 
-            end
-        end
-        results  
+        self.appointments.map do |appt|
+            appt.patient
+        end.uniq
+    end
+
+    def appointments 
+        Appointment.all.select { |appt| appt.doctor == self }
     end
 end

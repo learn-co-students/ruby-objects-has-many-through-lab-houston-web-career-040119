@@ -5,13 +5,11 @@ require_relative "genre.rb"
 
 class Artist
     attr_reader :name
-    attr_accessor :songs
 
     @@all = []
 
     def initialize(name)
         @name = name 
-        @songs = []
         @@all << self 
     end 
 
@@ -24,12 +22,12 @@ class Artist
     end
 
     def genres 
-        results = []
-        self.songs.each do |song|
-            if !results.include?(song.genre)
-                results << song.genre
-            end
-        end
-        results 
+        self.songs.map do |song|
+            song.genre
+        end.uniq
+    end
+
+    def songs 
+        Song.all.select { |song| song.artist == self }
     end
 end

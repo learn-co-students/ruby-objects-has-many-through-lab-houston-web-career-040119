@@ -1,12 +1,10 @@
 class Genre
     attr_reader :name 
-    attr_accessor :songs
 
     @@all = []
 
     def initialize(name)
         @name = name
-        @songs = []
         @@all << self
     end
 
@@ -15,12 +13,12 @@ class Genre
     end
 
     def artists
-        results = []
-        self.songs.each do |song|
-            if !results.include?(song.artist)
-                results << song.artist 
-            end
+        self.songs.map do |song|
+            song.artist
         end
-        results 
+    end
+
+    def songs 
+        Song.all.select { |song| song.genre == self }
     end
 end
